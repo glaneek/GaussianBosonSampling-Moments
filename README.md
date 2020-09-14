@@ -5,12 +5,12 @@ It makes use of the strawberryfield python package: https://strawberryfields.rea
 
 * GBS_functions.py: This script holds every required funcion for the rest of the scripts. Make sure you 
 		  import everything. Every function has its own discription in line. In general it is 
-		  separated into: - Strawberryfield: functions to model a system and get probabilities
-				  - Symplectic Matricesl: functions to model a system and get photon number
+		  separated into: * Strawberryfield: functions to model a system and get probabilities
+				  * Symplectic Matricesl: functions to model a system and get photon number
 							  covariances through the symplectic matrices formalism
-				  - Sampling Simulation : it samples from the strawberryfield exact PDF to
+				  * Sampling Simulation : it samples from the strawberryfield exact PDF to
 							  simulate experimental data, of finite sample size
-				  - General: functions that extract data from files.
+				  * General: functions that extract data from files.
 
 * GBS_model_generator.py: Define your model here! beamsplitters, phaseshifters, squeezers. It models the system
  			with the strawberry field package and saves the probabilities for corresponding states
