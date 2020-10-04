@@ -18,8 +18,13 @@ Pi=np.pi;
 
 t=datetime.datetime.now().time()
 #filepath="GBS_BS_gauss.txt"
-filepath="GBS_sim_export.txt"
-
+filepath="DATA.txt"
+rd.seed(10)
+err=[]
+for i in range(16):
+    r=rd.random()
+    err.append(1.1*r-1)
+    
 #######Define your system#######
 #How many modes?
 dim=4
@@ -27,15 +32,26 @@ dim=4
 BeamS=np.array([1,3,2,1,3,2,1,3])
 BeamS=BeamS-1
 #For each beam splitter provide appropriate angle [(pi/2,0),(pi/3,0)...] etc.
-BSargs = [(Pi/4, 0),(Pi/4,0),(Pi/4, 0),
-          (0, 0),(Pi/4,0),(Pi/4, 0),
-          (Pi/4, 0),(Pi/4,0)]
+BSargs = [(Pi/4+err[0], 0),
+          (Pi/4+err[1], 0),
+          (Pi/4+err[2], 0),
+          (Pi/4+err[3], 0),
+          (Pi/4+err[4], 0),
+          (Pi/4+err[5], 0),
+          (Pi/4+err[6], 0),
+          (Pi/4+err[7],0)]
 
 #Phase shifters' arguments
-PHargs=[Pi/4,0,Pi/4,0]
+PHargs=[Pi/4+err[8],
+        0+err[9],
+        Pi/4+err[10],
+        0+err[11]]
 
 #Squeezing arguments
-SQargs=[0.4,0,0.5,0.4]
+SQargs=[0.4+err[12],
+        0+err[13],
+        0.5+err[14],
+        0.4+err[15]]
 
 #Generate total unitary matrix for BS, PH
 UBS=beam_splitter_args(dim,BSargs,BeamS)
@@ -69,7 +85,7 @@ results = eng.run(gbs)
 
 #States to loop over. Defualt N=6 -> [0,0,0,0]...[5,5,5,5]
 measure_states=[]
-N=9
+N=12
 for h in range(N):
     for h1 in range(N):
         for h2 in range(N):
