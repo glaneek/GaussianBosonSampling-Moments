@@ -1,0 +1,5 @@
+-Concise single scriipt for data generation
+	a. Exact probabiliies
+	b. Sample
+-Symplectic matrix calculator with guessed errors
+-Integrated function for comparison with stable data values, for scipy.optimize.minimize operation
