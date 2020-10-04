@@ -1,0 +1,13 @@
+1. Single script to simulate experimental data:
+	a. Define system and include random errors
+	b. Generate exact probabilities with strawberryfields
+	c. Sample to simulate finite experimental measurments
+	d. Export data file 
+
+2. Function that outputs RSS when compared to ideal (symplectic) values:
+	a. Load data
+	b. Extract moments from data
+	c. Generate ideal moments
+	d. Compare and get a single RSS function
+
+3. Optimisation method where the 2. is used as the central function
