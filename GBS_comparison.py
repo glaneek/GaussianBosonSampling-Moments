@@ -31,7 +31,7 @@ BSargs = [(Pi/4, 0),(Pi/4,0),(Pi/4, 0),
           (Pi/4, 0),(Pi/4,0)]
 
 #Phase shifters' arguments
-PHargs=[Pi/4,0,0,0]
+PHargs=[Pi/4,0,Pi/4,0]
 
 #Squeezing arguments
 SQargs=[0.4,0,0.5,0.4]
@@ -53,15 +53,16 @@ argss=[4,1,3,2,1,3,2,1,3,states]
 
 
 rss=RSS(x)
-print(type(rss))
 
+print("Initiate optimization")
 from scipy.optimize import minimize
 x0 = np.array(x)
-res = minimize(RSS, x0)
+res = minimize(RSS,x0,method='TNC')
 errE=res.x
 
+err1=np.array(x)+np.array(err)
 plt.figure()
-plt.plot(err,label="err")
+plt.plot(err1,label="err")
 plt.plot(errE,label="errE")
 plt.legend()
 plt.show()
