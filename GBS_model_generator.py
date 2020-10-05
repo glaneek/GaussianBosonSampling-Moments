@@ -60,6 +60,7 @@ err=[]
 for i in range(16):
     r=rd.random()
     err.append(1.1*r-1)
+
     
 #######Define your system#######
 #How many modes?
@@ -123,7 +124,7 @@ results = eng.run(gbs)
 
 #States to loop over. Defualt N=6 -> [0,0,0,0]...[5,5,5,5]
 measure_states=[]
-N=4
+N=12
 print("Generate states from [0,0,0,0] to [N,N,N,N] with N=%d"%N)
 count=0
 for h in range(N):

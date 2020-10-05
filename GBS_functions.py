@@ -305,13 +305,36 @@ def comparison(Vexp,actual):
     #print(comparison)
     return comparison
 
-def RSS(dim,SQargs,PHargs,BSargs,BeamS,states):
+def RSS(x):
     ''''For given theoretical values and experimental data sets,
         an RSS values is returned'''
+        
+    #How many modes?
+    #dim=args[0]
+    dim=4
+    #Beam splitter sequence and arguments
+    #BeamS=np.array(args[1:-1])
+    BeamS=np.array([1,3,2,1,3,2,1,3])
+    BeamS=BeamS-1
+    
+    #For each beam splitter provide appropriate angle [(pi/2,0),(pi/3,0)...] etc.
+    BSargs = [(x[0], 0),(x[1],0),(x[2], 0),
+          (x[3], 0),(x[4],0),(x[5], 0),
+          (x[6], 0),(x[7],0)]
+    
+    PHargs=[x[8],x[9],x[10],x[11]]
+    SQargs=[x[12],x[13],x[14],x[15]]
+    PHargs=np.array(PHargs)
+    BSargs=np.array(BSargs)
+    
+    filepath="Exp_DATA.txt"
+    states=[]
+    states=extract_data(filepath)
+    #states=args[-1]
     #Theoretical covariance matrix
     Vfinal=Vfinal_symplectic(dim,SQargs,PHargs,BSargs,BeamS)
     
-    #Moments to calculate
+    #Moments to calculateargss
     allmodes2=[[1,1],[1,2],[1,3],[1,4],[2,2],[2,3],[2,4],[3,3],[3,4],[4,4]]
     allmodes1=[1,2,3,4]
 

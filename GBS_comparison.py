@@ -13,6 +13,8 @@ import math
 from GBS_functions import *
 import random as rd
 import datetime
+from GBS_model_generator import err
+import matplotlib.pyplot as plt
 
 Pi=np.pi
 
@@ -43,6 +45,23 @@ filepath="Exp_DATA.txt"
 states=[]
 states=extract_data(filepath)
 
+x=[np.pi/4,np.pi/4,np.pi/4,np.pi/4,
+   np.pi/4,np.pi/4,np.pi/4,np.pi/4,
+   np.pi/4,0,np.pi/4,0,
+   0.4,0,0.5,0.4]
+argss=[4,1,3,2,1,3,2,1,3,states]
 
-RSS=RSS(dim,SQargs,PHargs,BSargs,BeamS,states)
-print(RSS)
+
+rss=RSS(x)
+print(type(rss))
+
+from scipy.optimize import minimize
+x0 = np.array(x)
+res = minimize(RSS, x0)
+errE=res.x
+
+plt.figure()
+plt.plot(err,label="err")
+plt.plot(errE,label="errE")
+plt.legend()
+plt.show()
