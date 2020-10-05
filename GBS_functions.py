@@ -23,7 +23,6 @@ def beam_splitter_args(dim,BSargs,B):
 
     #Generate Unitary transformations of beam spleaters
     BSunitaries = [np.array([[t, -np.conj(r)], [r, t]]) for t,r in t_r_amplitudes]
-    print(np.round(BSunitaries,2))
     UBS=np.diag(np.ones(dim))
     p=0
     UBSs=[]
@@ -228,17 +227,19 @@ def extract_data(filepath):
            mstates.append([tint,probs1])
            #move to next line
            line = fp.readline()
-    print("\n     --Data extracted--\n")
+    #print("--Data extracted--")
     return mstates;
 
 
-def run_sampling(CDF1, Nruns=5000):
+def run_sampling(CDF1, Nruns):
     '''Generate samples'''
     Xs = np.zeros_like(CDF1,dtype=int)
+    count=0
     for k in np.arange(Nruns):
         a = np.random.uniform(0,1)
         el=np.argmax(CDF1>=a)
         Xs[el] += 1
+        
 
     return Xs/np.sum(Xs)
 
@@ -303,3 +304,22 @@ def comparison(Vexp,actual):
             comparison.append(summation)
     #print(comparison)
     return comparison
+
+def RSS(dim,SQargs,PHargs,BSargs,BeamS,states):
+    ''''For given theoretical values and experimental data sets,
+        an RSS values is returned'''
+    #Theoretical covariance matrix
+    Vfinal=Vfinal_symplectic(dim,SQargs,PHargs,BSargs,BeamS)
+    
+    #Moments to calculate
+    allmodes2=[[1,1],[1,2],[1,3],[1,4],[2,2],[2,3],[2,4],[3,3],[3,4],[4,4]]
+    allmodes1=[1,2,3,4]
+
+    
+    ##########--COMPARISON--#########
+    #Get sampled moments and actual moments
+    Vexp, actual, diag=get_sampled_moments(allmodes1,allmodes2,states,Vfinal)
+    #Compare
+    comp=comparison(Vexp,actual)
+    RSS=np.sum(comp)
+    return RSS

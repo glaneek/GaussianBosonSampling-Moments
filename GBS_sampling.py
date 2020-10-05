@@ -52,9 +52,6 @@ states=extract_data(filepath)
 #Get CDF of data
 CDF=get_CDF(states)
 
-
-
-    
     
     
 def comp_main(dim,SQargs,PHargs,BSargs,BeamS,allmodes1,allmodes2,ExpStates):
@@ -125,7 +122,7 @@ def comp_main(dim,SQargs,PHargs,BSargs,BeamS,allmodes1,allmodes2,ExpStates):
 
 #Vexp_tot=np.zeros(len(allmodes2))
 comparison_tot=np.zeros(4)
-N=100
+N=1
 test1=np.zeros(10)
 test2=np.zeros(10)
 test3=np.zeros(10)
