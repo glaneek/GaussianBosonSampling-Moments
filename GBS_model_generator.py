@@ -59,8 +59,23 @@ rd.seed(10)
 err=[]
 for i in range(16):
     r=rd.random()
-    err.append(1.1*r-1)
-
+    err.append(0.1*r-0.05)
+    
+err[1]=0
+err[2]=0
+err[3]=0
+err[4]=0
+err[5]=0
+err[6]=0
+err[7]=0
+err[8]=0
+err[9]=0
+err[10]=0
+err[11]=0
+err[12]=0
+err[13]=0
+err[14]=0
+err[15]=0
     
 #######Define your system#######
 #How many modes?
@@ -192,7 +207,7 @@ print("Extract exact probabilities")
 #Extract Data
 states=[]
 states=extract_data(filepath)
-Nruns=10e5
+Nruns=10e7
 
 
 print("Optain CDF and get Nruns=%d samples"%Nruns)

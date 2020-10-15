@@ -10,6 +10,7 @@ from numpy.linalg import multi_dot
 from scipy.linalg import block_diag
 import random as rd
 import time
+Pi=np.pi
 
 
 ##############################################################################
@@ -305,7 +306,7 @@ def comparison(Vexp,actual):
     #print(comparison)
     return comparison
 
-def RSS(x):
+def RSS(x,filepath):
     ''''For given theoretical values and experimental data sets,
         an RSS values is returned'''
         
@@ -318,16 +319,31 @@ def RSS(x):
     BeamS=BeamS-1
     
     #For each beam splitter provide appropriate angle [(pi/2,0),(pi/3,0)...] etc.
-    BSargs = [(x[0], 0),(x[1],0),(x[2], 0),
-          (x[3], 0),(x[4],0),(x[5], 0),
-          (x[6], 0),(x[7],0)]
+    # BSargs = [(x[0], 0),(x[1],0),(x[2], 0),
+    #       (x[3], 0),(x[4],0),(x[5], 0),
+    #       (x[6], 0),(x[7],0)]
     
-    PHargs=[x[8],x[9],x[10],x[11]]
-    SQargs=[x[12],x[13],x[14],x[15]]
+    BSargs = [(x, 0),
+          (Pi/4, 0),
+          (Pi/4, 0),
+          (Pi/4, 0),
+          (Pi/4, 0),
+          (Pi/4, 0),
+          (Pi/4, 0),
+          (Pi/4,0)]
+    
+    #PHargs=[x[8],x[9],x[10],x[11]]
+    #SQargs=[x[12],x[13],x[14],x[15]]
+    # PHargs=[x[0],x[1],x[2],x[3]]
+    # SQargs=[x[4],x[5],x[6],x[7]]
+     #Phase shifters' arguments
+    PHargs=[Pi/4,0,Pi/4,0]
+    #Squeezing arguments
+    SQargs=[0.4,0,0.5,0.4]
     PHargs=np.array(PHargs)
     BSargs=np.array(BSargs)
     
-    filepath="Exp_DATA.txt"
+    #filepath="Exp_DATA.txt"
     states=[]
     states=extract_data(filepath)
     #states=args[-1]
