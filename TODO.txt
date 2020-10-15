@@ -1,2 +1,4 @@
-1. Check for sampling vs CumSum effet on accuracy
-2. Independent BS?
+1. Check for sampling vs CumSum effet on accuracy CHECK
+2. Independent BS? nope. CHECK
+
+3. pm2% error. Accuracy for BS characterisation pm1% with exact data. Try Exp_DATA.txt

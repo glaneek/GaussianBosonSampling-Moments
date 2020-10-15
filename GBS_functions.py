@@ -306,10 +306,14 @@ def comparison(Vexp,actual):
     #print(comparison)
     return comparison
 
-def RSS(x,filepath):
+def RSS(x):
     ''''For given theoretical values and experimental data sets,
         an RSS values is returned'''
-        
+    rd.seed(10)
+    err=[]
+    for i in range(16):
+        r=rd.random()
+        err.append(0.1*r-0.05)
     #How many modes?
     #dim=args[0]
     dim=4
@@ -319,18 +323,18 @@ def RSS(x,filepath):
     BeamS=BeamS-1
     
     #For each beam splitter provide appropriate angle [(pi/2,0),(pi/3,0)...] etc.
-    # BSargs = [(x[0], 0),(x[1],0),(x[2], 0),
-    #       (x[3], 0),(x[4],0),(x[5], 0),
-    #       (x[6], 0),(x[7],0)]
+    BSargs = [(x[0], 0),(x[1],0),(x[2], 0),
+          (x[3], 0),(x[4],0),(x[5], 0),
+          (x[6], 0),(x[7],0)]
     
-    BSargs = [(x, 0),
-          (Pi/4, 0),
-          (Pi/4, 0),
-          (Pi/4, 0),
-          (Pi/4, 0),
-          (Pi/4, 0),
-          (Pi/4, 0),
-          (Pi/4,0)]
+    # BSargs = [(x[0], 0),
+    #       (x[1], 0),
+    #       (x[2], 0),
+    #       (x[3], 0),
+    #       (Pi/4, 0),
+    #       (Pi/4, 0),
+    #       (Pi/4, 0),
+    #       (Pi/4,0)]
     
     #PHargs=[x[8],x[9],x[10],x[11]]
     #SQargs=[x[12],x[13],x[14],x[15]]
@@ -343,7 +347,7 @@ def RSS(x,filepath):
     PHargs=np.array(PHargs)
     BSargs=np.array(BSargs)
     
-    #filepath="Exp_DATA.txt"
+    filepath="DATA.txt"
     states=[]
     states=extract_data(filepath)
     #states=args[-1]

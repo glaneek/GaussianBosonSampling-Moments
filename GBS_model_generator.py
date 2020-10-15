@@ -59,15 +59,9 @@ rd.seed(10)
 err=[]
 for i in range(16):
     r=rd.random()
-    err.append(0.1*r-0.05)
+    err.append(0.04*r-0.02)
     
-err[1]=0
-err[2]=0
-err[3]=0
-err[4]=0
-err[5]=0
-err[6]=0
-err[7]=0
+
 err[8]=0
 err[9]=0
 err[10]=0
@@ -139,7 +133,7 @@ results = eng.run(gbs)
 
 #States to loop over. Defualt N=6 -> [0,0,0,0]...[5,5,5,5]
 measure_states=[]
-N=12
+N=13
 print("Generate states from [0,0,0,0] to [N,N,N,N] with N=%d"%N)
 count=0
 for h in range(N):
@@ -196,7 +190,7 @@ file.close()
 
 print("Exact probabilities calculated\n")
 
-
+#%%
 #############################################################
 ########################--STEP 2--###########################
 #############################################################
@@ -207,7 +201,7 @@ print("Extract exact probabilities")
 #Extract Data
 states=[]
 states=extract_data(filepath)
-Nruns=10e7
+Nruns=10e5
 
 
 print("Optain CDF and get Nruns=%d samples"%Nruns)

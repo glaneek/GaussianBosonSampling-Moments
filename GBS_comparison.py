@@ -43,15 +43,9 @@ rd.seed(10)
 err=[]
 for i in range(16):
     r=rd.random()
-    err.append(0.1*r-0.05)
-#%%
-err[1]=0
-err[2]=0
-err[3]=0
-err[4]=0
-err[5]=0
-err[6]=0
-err[7]=0
+    err.append(0.04*r-0.02)
+
+
 err[8]=0
 err[9]=0
 err[10]=0
@@ -65,7 +59,14 @@ bo=[[Pi/4,Pi/4+0.01],[Pi/4-0.01,Pi/4+0],
     [Pi/4,Pi/4+0.032],[Pi/4-0,Pi/4+0.032],
     [Pi/4-0,Pi/4+0.02],[Pi/4-0.035,Pi/4+0]]
 
-bo=[[Pi/4+0.007, Pi/4+0.0072]]
+bo=[[Pi/4-0.2, Pi/4+0.2],
+    [Pi/4-0.2, Pi/4+0.2],
+    [Pi/4-0.2, Pi/4+0.2],
+    [Pi/4-0.2, Pi/4+0.2],
+    [Pi/4-0.2, Pi/4+0.2],
+    [Pi/4-0.2, Pi/4+0.2],
+    [Pi/4-0.2, Pi/4+0.2],
+    [Pi/4-0.2, Pi/4+0.2]]
 
 #Load Data
 filepath="Exp_DATA.txt"
@@ -80,7 +81,7 @@ x=[np.pi/4,np.pi/4,np.pi/4,np.pi/4,
 x=[np.pi/4,np.pi/4,np.pi/4,np.pi/4,
    np.pi/4,np.pi/4,np.pi/4,np.pi/4]
 
-x=[np.pi/4+0.007]
+#x=[Pi/4,Pi/4,Pi/4,Pi/4]
 
 argss=[4,1,3,2,1,3,2,1,3,states]
 
@@ -89,23 +90,28 @@ print(rss)
 print("Initiate optimization")
 from scipy.optimize import minimize
 x0 = np.array(x)
-res = minimize(RSS,x0,tol=1e-10,bounds=bo)
+res = minimize(RSS,x0,tol=1e-5,bounds=bo)
 errE=res.x
 
-err1=np.array(x)+np.array(err[0])
+err1=np.array(x)+np.array(err[:8])
 print("Optimasition done, ready to plot")
 
 
 plt.figure()
+plt.subplot(2,1,1)
 plt.plot(err1,'x-',label="Original")
 plt.plot(errE,'x-',label="Optimization Error")
 plt.plot(x,'x-',label="Perfect")
+plt.legend()
+plt.subplot(2,1,2)
+percR=(err1-errE)/err1 *100
+plt.plot(percR,label="Rediduals Percentage")
 plt.legend()
 plt.show()
 print(RSS(res.x))
 
 #%%
-inpu=np.arange(0.78,0.8,0.001)
+inpu=np.arange(0.76,0.8,0.005)
 
 aoutput=[]
 
@@ -134,7 +140,7 @@ plt.vlines(amin,ami,ama,label="%.4f"%amin)
 plt.plot(inpu,boutput,label="DATA.txt")
 plt.vlines(bmin,bmi,bma,label="%.4f"%bmin,colors='r')
 
-plt.vlines(x,bmi,ama,label="%.4f"%x[0],colors='g')
+plt.vlines(x,ami,bma,label="%.4f"%x[0],colors='g')
 
 
 plt.legend()
