@@ -1,4 +1,5 @@
-1. Check for sampling vs CumSum effet on accuracy CHECK
-2. Independent BS? nope. CHECK
+Breaks at 6-7. Weird decrease in accuracy depending on the choice of pairs. Does this imply stronger correlations ?
 
-3. pm2% error. Accuracy for BS characterisation pm1% with exact data. Try Exp_DATA.txt
+LAST: A function to test valuews for SOME BS, on demand. 
+
+TODO: Try to get averages. Whats the accuracy? 
