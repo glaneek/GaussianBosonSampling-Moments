@@ -15,6 +15,8 @@ import random as rd
 import datetime
 #from GBS_model_generator import err
 import matplotlib.pyplot as plt
+from scipy.optimize import minimize
+
 
 Pi=np.pi
 
@@ -49,86 +51,112 @@ BSargs=np.array(BSargs)
 allmodes2=[[1,1],[1,2],[1,3],[1,4],[2,2],[2,3],[2,4],[3,3],[3,4],[4,4]]
 allmodes1=[1,2,3,4]
 
-filepath="DATA0134567.txt"
+filepath="DATA_all.txt"
 states=[]
 states=extract_data(filepath)
 ##########--COMPARISON--#########
 #Get sampled moments and actual moments
 momends1, momends2 = get_sampled_moments(allmodes1,allmodes2,states)
+#%%
+TOL=[allmodes1,allmodes2,momends1,momends2,[],[]]
 
-TOL=[allmodes1,allmodes2,momends1,momends2]
+def all(TOL,PARINDEX):
+    rd.seed(10)
+    err=[]
+    for i in range(16):
+        r=rd.random()
+        err.append(0.04*r-0.02)
+        
+    #True values of ALL beam splitters
+    BS=np.array(err[:8])+Pi/4
+    
+    # #Index True (Known), False (To be found)
+    # PARINDEX=[False, False,
+    #           False, False,
+    #           False, True,
+    #           True, True]
+    
+    #Assign initial condition of Pi/4 to unknown parameters
+    #as starting points
+    x0=[]
+    err1=[]
+    for i in range(len(PARINDEX)):
+        if PARINDEX[i]==False:
+            x0.append(Pi/4)
+            err1.append(BS[i])
+    
+    print("Initiate optimization")
+    
+    BSargs=[]
+    for i in range(len(PARINDEX)):
+        if PARINDEX[i]:
+            BSargs.append((BS[i],0))
+        else:
+            BSargs.append((0,0))
+            
+    TOL[4]=BSargs
+    TOL[5]=PARINDEX
+    
+    count=0
+    for i in range(len(BSargs)):
+        if (BSargs[i])[0]==0:
+            BSargs[i]=(x0[count],0)
+            count+=1
+    
+    rss=RSS(x0,TOL)
+    print(rss)
+    
+    res = minimize(RSS,x0,args=TOL)
+    errE=res.x
+    
+    #err1=np.array(BS)
+    #err1=np.array(x)+np.hstack([err[0:6],err[7]])
+    print("Optimasition done, ready to plot")
+    
+    print(RSS(res.x,TOL))
+    print(RSS(err1,TOL))
+    
+    return err1, errE, x0
 
+#%%
 
-rd.seed(10)
-err=[]
-for i in range(16):
-    r=rd.random()
-    err.append(0.04*r-0.02)
+temp=[False, False, False, False,
+      False, False, False, False]
 
-# err[0]=0
-# err[1]=0    
-err[2]=0
-# err[3]=0
+temp=[True, True, True, True,
+      True, True, True, True]
 
-# err[4]=0
-# err[5]=0    
-# err[6]=0
-#err[7]=0
+all_ind=[]
 
-err[8]=0
-err[9]=0
-err[10]=0
-err[11]=0
-err[12]=0
-err[13]=0
-err[14]=0
-err[15]=0
+for k in range(len(temp)):
+    temp[k]=False
+    all_ind.append(np.copy(temp))
+    temp[k]=True
+    
 
+plt.figure()
 
-bo=[[Pi/4+0.002, Pi/4+0.003],
-    [Pi/4-0.003, Pi/4-0.002],
-    [Pi/4-0.012, Pi/4-0.011],
-    [Pi/4+0.012, Pi/4+0.013],
-    [Pi/4+0.012, Pi/4+0.013],
-    [Pi/4+0.006, Pi/4+0.007],
-    [Pi/4-0.014, Pi/4-0.013]]
+for p in all_ind:
+    err1, errE, x0=all(TOL,p)
+    #plt.plot(err1,'o-',label="Original")
+    plt.plot(errE,'x-',label="Optimization Error")
+    #plt.plot(x0, 'x-', label='Starting')
+    
+plt.show()
 
-# bo=[[Pi/4-0.02,Pi/4+0.02],
-#     [Pi/4-0.02,Pi/4+0.02],
-#     [Pi/4-0.02,Pi/4+0.02],
-#     [Pi/4-0.02,Pi/4+0.02],
-#     [Pi/4-0.02,Pi/4+0.02],
-#     [Pi/4+0.02,Pi/4+0.02]]
-
-x=[Pi/4,Pi/4,Pi/4,Pi/4,Pi/4,Pi/4,Pi/4]
-
-x0=[Pi/4,Pi/4,Pi/4,Pi/4,Pi/4,Pi/4,Pi/4]
-
-rss=RSS(x,TOL)
-print(rss)
-print("Initiate optimization")
-from scipy.optimize import minimize
-res = minimize(RSS,x0,args=TOL)
-errE=res.x
-
-#err1=np.array(x)+np.array(err[0:7])
-err1=np.array(x)+np.hstack([err[0:2],err[3:8]])
-print("Optimasition done, ready to plot")
+#%%
 
 plt.figure()
 plt.subplot(2,1,1)
 plt.plot(err1,'o-',label="Original")
 plt.plot(errE,'x-',label="Optimization Error")
-plt.plot(x,'x-',label="Perfect")
+plt.plot(x0, 'x-', label='Starting')
 plt.legend()
 plt.subplot(2,1,2)
 percR=(err1-errE)/err1 *100
 plt.plot(percR,'x-',label="Rediduals Percentage")
 plt.legend()
 plt.show()
-print(RSS(res.x,TOL))
-
-
 
 #%%
 inpu=np.arange(0.76,0.8,0.005)

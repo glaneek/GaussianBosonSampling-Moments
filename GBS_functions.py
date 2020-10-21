@@ -319,23 +319,18 @@ def RSS(x,TOL):
     BeamS=np.array([1,3,2,1,3,2,1,3])
     BeamS=BeamS-1
     
-    BSargs = [(x[0], 0),
-      (x[1], 0), 
-      (Pi/4, 0),
-      (x[2], 0),
-      (x[3], 0),     
-      (x[4], 0),
-      (x[5], 0),
-      (x[6], 0)]
+    BSargs=TOL[4]
+    INDEX=TOL[5]
     
-   
-    #PHargs=[x[8],x[9],x[10],x[11]]
-    #SQargs=[x[12],x[13],x[14],x[15]]
-    # PHargs=[x[0],x[1],x[2],x[3]]
-    # SQargs=[x[4],x[5],x[6],x[7]]
+    count=0
+    for i in range(len(BSargs)):
+        if INDEX[i]==False:
+            BSargs[i]=(x[count],0)
+            count+=1
+    
      #Phase shifters' arguments
     PHargs=[Pi/4,0,Pi/4,0]
-    PHargs=[0,0,0,0]
+
     #Squeezing arguments
     SQargs=[0.4,0,0,0.4]
     PHargs=np.array(PHargs)

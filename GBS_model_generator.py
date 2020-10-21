@@ -54,7 +54,7 @@ print("1. Calculating Exact probabilties")
 Pi=np.pi;
 t=datetime.datetime.now().time()
 #filepath="GBS_BS_gauss.txt"
-filepath="DATA0134567.txt"
+filepath="DATA_all.txt"
 rd.seed(10)
 err=[]
 for i in range(16):
@@ -63,10 +63,10 @@ for i in range(16):
 
 #err[0]=0
 #err[1]=0
-err[2]=0
-# err[3]=0
+#err[2]=0
+#err[3]=0
 
-# err[4]=0
+#err[4]=0
 #err[5]=0
 #err[6]=0
 #err[7]=0
@@ -95,12 +95,12 @@ BSargs = [(Pi/4+err[0], 0),
           (Pi/4+err[4], 0),
           (Pi/4+err[5], 0),
           (Pi/4+err[6], 0),
-          (Pi/4+err[7],0)]
+          (Pi/4+err[7], 0)]
 
 #Phase shifters' arguments
-PHargs=[0+err[8],
+PHargs=[Pi/4+err[8],
         0+err[9],
-        0+err[10],
+        Pi/4+err[10],
         0+err[11]]
 
 #Squeezing arguments
