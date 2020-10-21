@@ -54,13 +54,22 @@ print("1. Calculating Exact probabilties")
 Pi=np.pi;
 t=datetime.datetime.now().time()
 #filepath="GBS_BS_gauss.txt"
-filepath="DATA.txt"
+filepath="DATA0134567.txt"
 rd.seed(10)
 err=[]
 for i in range(16):
     r=rd.random()
     err.append(0.04*r-0.02)
-    
+
+#err[0]=0
+#err[1]=0
+err[2]=0
+# err[3]=0
+
+# err[4]=0
+#err[5]=0
+#err[6]=0
+#err[7]=0
 
 err[8]=0
 err[9]=0
@@ -89,15 +98,15 @@ BSargs = [(Pi/4+err[0], 0),
           (Pi/4+err[7],0)]
 
 #Phase shifters' arguments
-PHargs=[Pi/4+err[8],
+PHargs=[0+err[8],
         0+err[9],
-        Pi/4+err[10],
+        0+err[10],
         0+err[11]]
 
 #Squeezing arguments
 SQargs=[0.4+err[12],
         0+err[13],
-        0.5+err[14],
+        0+err[14],
         0.4+err[15]]
 #-----------------------------------#
 
@@ -190,7 +199,7 @@ file.close()
 
 print("Exact probabilities calculated\n")
 
-#%%
+
 #############################################################
 ########################--STEP 2--###########################
 #############################################################
@@ -201,7 +210,7 @@ print("Extract exact probabilities")
 #Extract Data
 states=[]
 states=extract_data(filepath)
-Nruns=10e5
+Nruns=10e4
 
 
 print("Optain CDF and get Nruns=%d samples"%Nruns)

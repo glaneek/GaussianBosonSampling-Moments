@@ -262,7 +262,7 @@ def get_CDF(Expstates1):
     return CDF
 
 
-def get_sampled_moments(allmodes1,allmodes2,Expstates1,Vfinal):
+def get_sampled_moments(allmodes1,allmodes2,Expstates1):
     
     #MIND THE ORDER
     momends2=[]
@@ -274,7 +274,10 @@ def get_sampled_moments(allmodes1,allmodes2,Expstates1,Vfinal):
     for modes in allmodes1:
         mom=moments_experiment([modes],Expstates1)
         momends1.append(mom)
-          
+        
+    return momends1, momends2
+
+def get_sampled_moments1(allmodes1, allmodes2, momends1, momends2, Vfinal):          
     Vexp=[]
     actual=[]
     diag=[]
@@ -294,75 +297,57 @@ def get_sampled_moments(allmodes1,allmodes2,Expstates1,Vfinal):
         actual.append(atot)
         diag.append(adtot)
         
-    return Vexp, actual, diag
+    return np.array(Vexp), np.array(actual), diag
 
 def comparison(Vexp,actual):
     
     #Compare Vexp and Actual
     comparison=[]
     for j in range(len(Vexp)):
-            summation=(Vexp[j]-actual[j])**2
+            summation=np.sqrt((Vexp[j]-actual[j])**2)
             comparison.append(summation)
     #print(comparison)
     return comparison
 
-def RSS(x):
-    ''''For given theoretical values and experimental data sets,
-        an RSS values is returned'''
-    rd.seed(10)
-    err=[]
-    for i in range(16):
-        r=rd.random()
-        err.append(0.1*r-0.05)
-    #How many modes?
-    #dim=args[0]
+
+
+def RSS(x,TOL):
+    
     dim=4
     #Beam splitter sequence and arguments
     #BeamS=np.array(args[1:-1])
     BeamS=np.array([1,3,2,1,3,2,1,3])
     BeamS=BeamS-1
     
-    #For each beam splitter provide appropriate angle [(pi/2,0),(pi/3,0)...] etc.
-    BSargs = [(x[0], 0),(x[1],0),(x[2], 0),
-          (x[3], 0),(x[4],0),(x[5], 0),
-          (x[6], 0),(x[7],0)]
+    BSargs = [(x[0], 0),
+      (x[1], 0), 
+      (Pi/4, 0),
+      (x[2], 0),
+      (x[3], 0),     
+      (x[4], 0),
+      (x[5], 0),
+      (x[6], 0)]
     
-    # BSargs = [(x[0], 0),
-    #       (x[1], 0),
-    #       (x[2], 0),
-    #       (x[3], 0),
-    #       (Pi/4, 0),
-    #       (Pi/4, 0),
-    #       (Pi/4, 0),
-    #       (Pi/4,0)]
-    
+   
     #PHargs=[x[8],x[9],x[10],x[11]]
     #SQargs=[x[12],x[13],x[14],x[15]]
     # PHargs=[x[0],x[1],x[2],x[3]]
     # SQargs=[x[4],x[5],x[6],x[7]]
      #Phase shifters' arguments
     PHargs=[Pi/4,0,Pi/4,0]
+    PHargs=[0,0,0,0]
     #Squeezing arguments
-    SQargs=[0.4,0,0.5,0.4]
+    SQargs=[0.4,0,0,0.4]
     PHargs=np.array(PHargs)
     BSargs=np.array(BSargs)
     
-    filepath="DATA.txt"
-    states=[]
-    states=extract_data(filepath)
     #states=args[-1]
     #Theoretical covariance matrix
     Vfinal=Vfinal_symplectic(dim,SQargs,PHargs,BSargs,BeamS)
     
-    #Moments to calculateargss
-    allmodes2=[[1,1],[1,2],[1,3],[1,4],[2,2],[2,3],[2,4],[3,3],[3,4],[4,4]]
-    allmodes1=[1,2,3,4]
-
+    Vexp, actual, diag=get_sampled_moments1(TOL[0], TOL[1], TOL[2], TOL[3], Vfinal)
     
-    ##########--COMPARISON--#########
-    #Get sampled moments and actual moments
-    Vexp, actual, diag=get_sampled_moments(allmodes1,allmodes2,states,Vfinal)
-    #Compare
-    comp=comparison(Vexp,actual)
-    RSS=np.sum(comp)
-    return RSS
+    comp=np.abs(Vexp-actual)
+    RSSv=np.sum(comp)
+    
+    return RSSv
