@@ -57,7 +57,7 @@ states=extract_data(filepath)
 ##########--COMPARISON--#########
 #Get sampled moments and actual moments
 momends1, momends2 = get_sampled_moments(allmodes1,allmodes2,states)
-#%%
+#
 TOL=[allmodes1,allmodes2,momends1,momends2,[],[]]
 
 def all(TOL,PARINDEX):
@@ -81,16 +81,17 @@ def all(TOL,PARINDEX):
     x0=[]
     err1=[]
     for i in range(len(PARINDEX)):
-        if PARINDEX[i]==False:
+        if PARINDEX[i]==0:
             x0.append(Pi/4)
             err1.append(BS[i])
     
-    print("Initiate optimization")
+    #print("Initiate optimization")
     
     BSargs=[]
     for i in range(len(PARINDEX)):
         if PARINDEX[i]:
-            BSargs.append((BS[i],0))
+            BSargs.append((BS[i],0))#!!!!!!!!!!1
+            #BSargs.append((Pi/4,0))
         else:
             BSargs.append((0,0))
             
@@ -98,65 +99,105 @@ def all(TOL,PARINDEX):
     TOL[5]=PARINDEX
     
     count=0
+    print("here")
+    print(PARINDEX)
+    #print(x0)
     for i in range(len(BSargs)):
-        if (BSargs[i])[0]==0:
-            BSargs[i]=(x0[count],0)
-            count+=1
+            print(count)
+            if PARINDEX[i]==0:
+                BSargs[i]=(x0[count],0)
+                count+=1
     
     rss=RSS(x0,TOL)
-    print(rss)
+    #print(rss)
     
     res = minimize(RSS,x0,args=TOL)
     errE=res.x
     
     #err1=np.array(BS)
     #err1=np.array(x)+np.hstack([err[0:6],err[7]])
-    print("Optimasition done, ready to plot")
+    #print("Optimasition done, ready to plot")
     
-    print(RSS(res.x,TOL))
-    print(RSS(err1,TOL))
+    #print(RSS(res.x,TOL))
+    #print(RSS(err1,TOL))
     
-    return err1, errE, x0
+    return err1, errE, x0, BS
+
+
 
 #%%
+#################################################
 
-temp=[False, False, False, False,
-      False, False, False, False]
 
-temp=[True, True, True, True,
-      True, True, True, True]
+################################################################
 
-all_ind=[]
 
-for k in range(len(temp)):
-    temp[k]=False
-    all_ind.append(np.copy(temp))
-    temp[k]=True
+
+################################################################################
+
+from sympy.utilities.iterables import multiset_permutations
+l=list(multiset_permutations([1,1,1,1,0,0,0,0]))
+print(l)
+
+original=np.zeros(8)
+results=np.zeros(8)
+cn=0
+for p in l:
+    print("%2.f%%\r"%(cn/len(l)*100))
+    err1, errE, x0, BS=all(TOL,p)
+    count=0
+    arr=np.zeros(8)
+    ori=np.zeros(8)
     
+    for i in range(len(p)):
+        if p[i]==0:
+            arr[i]=errE[count]
+            ori[i]=err1[count]
+            count+=1
+        else:
+            arr[i]=0
+            ori[i]=0
+            
+    results=np.vstack([results,arr])
+    original=np.vstack([original,ori])
+    cn+=1
 
-plt.figure()
+results=results[1:,:]
+original=original[1:,:]
 
-for p in all_ind:
-    err1, errE, x0=all(TOL,p)
-    #plt.plot(err1,'o-',label="Original")
-    plt.plot(errE,'x-',label="Optimization Error")
-    #plt.plot(x0, 'x-', label='Starting')
-    
-plt.show()
+mean_results=np.sum(results,0)/(len(l)-(np.sum(l,0))[0])
+mean_original=np.sum(original,0)/(len(l)-(np.sum(l,0))[0])
+
+mean_original=BS
+#%%
+import numpy as np
+for i in range(100):
+    p=np.random.normal(loc=0.0, scale=1.0, size=None)
+    print(p)
 
 #%%
-
 plt.figure()
 plt.subplot(2,1,1)
-plt.plot(err1,'o-',label="Original")
-plt.plot(errE,'x-',label="Optimization Error")
-plt.plot(x0, 'x-', label='Starting')
+plt.plot(mean_results,'x-', label="Optimization Results")
+plt.plot(mean_original,'o-',label="True Values")
+plt.ylabel("BS angle $\theta$")
+plt.grid()
 plt.legend()
+
 plt.subplot(2,1,2)
-percR=(err1-errE)/err1 *100
+percR=(mean_results-mean_original)/mean_original *100
 plt.plot(percR,'x-',label="Rediduals Percentage")
-plt.legend()
+plt.xlabel("Beam Splitters")
+plt.ylabel("Residual %")
+#plt.plot(errE,'x-',label="Optimization Error")
+#plt.plot(x0, 'x-', label='Starting')
+plt.grid()
+
 plt.show()
+
+
+
+##############################################################################
 
 #%%
 inpu=np.arange(0.76,0.8,0.005)
