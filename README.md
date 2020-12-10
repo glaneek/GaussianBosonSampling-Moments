@@ -96,5 +96,6 @@ Therefore, starting from ideal optical component parameters, we try to minimize 
 
 ![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/characterising8BS.PNG?raw=true)
 
+![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/tranformationExample.PNG?raw=true)
 
 
