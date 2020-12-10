@@ -98,7 +98,7 @@ The default system that is simulated by the scripts is a 4 mode interferoemter a
 
 ![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/system.PNG?raw=true)
 
-By considering statistics of outputs states between |0,0,0,0> and |12,12,12,12> the BS values where identified with +/-0.5% which is almost an order of o magnitude compared to the typical provided manufacturing error bound.sy
+By considering statistics of outputs states between |0,0,0,0> and |12,12,12,12> the BS values where identified with ±0.5% which is almost an order of o magnitude compared to the typical provided manufacturing error bounds (±3-5%)
 
 ![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/characterising8BS.png?raw=true)
 
