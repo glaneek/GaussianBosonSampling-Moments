@@ -4,4 +4,8 @@ LAST: A function to test valuews for SOME BS, on demand.
 
 TODO: Try to get averages. Whats the accuracy? 
 
-Example run on README
+-Example run on README, more explicit
+
+-Sampling methods
+
+-Minimisation scipy function
