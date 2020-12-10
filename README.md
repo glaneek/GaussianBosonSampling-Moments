@@ -96,7 +96,7 @@ Therefore, starting from ideal optical component parameters, we try to minimize 
 
 The default system that is simulated by the scripts is a 4 mode interferoemter and 8 beam splitters:
 
-![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/system.png?raw=true)
+![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/system.PNG?raw=true)
 
 By considering statistics of outputs states between |0,0,0,0> and |12,12,12,12> the BS values where identified with +/-0.5% which is almost an order of o magnitude compared to the typical provided manufacturing error bound.sy
 
