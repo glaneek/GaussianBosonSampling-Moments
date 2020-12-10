@@ -92,9 +92,9 @@ Therefore, starting from ideal optical component parameters, we try to minimize 
 		  to the symplectic theoretical ones, whith a guessed error. It will repeat the process
 	          with a different error value. It slowly converges to the true error value.
 
-# Example Run
+## Example Run
 
-![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/characterising_8_BS.PNG?raw=true)
+![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/characterising8BS.PNG?raw=true)
 
 
 
