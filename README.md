@@ -17,7 +17,7 @@ can be represented by the corresponding symplectic matrix
 
 A tranformation from a combination of linear optical components is given by a direct sum of the corresponding sympecitc matrices. For example the following tranformation 
 
-![alt text](https://github.com/glaneek/try/blob/main/tranformationExample.PNG?raw=true)
+![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/tranformationExample.PNG?raw=true)
 
 can be described as a single 4x4 symplectic matrix
 
@@ -91,3 +91,10 @@ Therefore, starting from ideal optical component parameters, we try to minimize 
 * GBS_optimizer.py: The optimizer will sample, calculate moments from experimental data, and compare values
 		  to the symplectic theoretical ones, whith a guessed error. It will repeat the process
 	          with a different error value. It slowly converges to the true error value.
+
+# Example Run
+
+![alt text](https://github.com/glaneek/GaussianBosonSampling-Moments/blob/master/characterising_8_BS.PNG?raw=true)
+
+
+
