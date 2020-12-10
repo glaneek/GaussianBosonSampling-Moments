@@ -10,6 +10,7 @@ from numpy.linalg import multi_dot
 from scipy.linalg import block_diag
 import random as rd
 import time
+Pi=np.pi
 
 
 ##############################################################################
@@ -23,7 +24,6 @@ def beam_splitter_args(dim,BSargs,B):
 
     #Generate Unitary transformations of beam spleaters
     BSunitaries = [np.array([[t, -np.conj(r)], [r, t]]) for t,r in t_r_amplitudes]
-    print(np.round(BSunitaries,2))
     UBS=np.diag(np.ones(dim))
     p=0
     UBSs=[]
@@ -228,17 +228,19 @@ def extract_data(filepath):
            mstates.append([tint,probs1])
            #move to next line
            line = fp.readline()
-    print("\n     --Data extracted--\n")
+    #print("--Data extracted--")
     return mstates;
 
 
-def run_sampling(CDF1, Nruns=5000):
+def run_sampling(CDF1, Nruns):
     '''Generate samples'''
     Xs = np.zeros_like(CDF1,dtype=int)
+    count=0
     for k in np.arange(Nruns):
         a = np.random.uniform(0,1)
         el=np.argmax(CDF1>=a)
         Xs[el] += 1
+        
 
     return Xs/np.sum(Xs)
 
@@ -260,7 +262,7 @@ def get_CDF(Expstates1):
     return CDF
 
 
-def get_sampled_moments(allmodes1,allmodes2,Expstates1,Vfinal):
+def get_sampled_moments(allmodes1,allmodes2,Expstates1):
     
     #MIND THE ORDER
     momends2=[]
@@ -272,7 +274,10 @@ def get_sampled_moments(allmodes1,allmodes2,Expstates1,Vfinal):
     for modes in allmodes1:
         mom=moments_experiment([modes],Expstates1)
         momends1.append(mom)
-          
+        
+    return momends1, momends2
+
+def get_sampled_moments1(allmodes1, allmodes2, momends1, momends2, Vfinal):          
     Vexp=[]
     actual=[]
     diag=[]
@@ -292,14 +297,52 @@ def get_sampled_moments(allmodes1,allmodes2,Expstates1,Vfinal):
         actual.append(atot)
         diag.append(adtot)
         
-    return Vexp, actual, diag
+    return np.array(Vexp), np.array(actual), diag
 
 def comparison(Vexp,actual):
     
     #Compare Vexp and Actual
     comparison=[]
     for j in range(len(Vexp)):
-            summation=(Vexp[j]-actual[j])**2
+            summation=np.sqrt((Vexp[j]-actual[j])**2)
             comparison.append(summation)
     #print(comparison)
     return comparison
+
+
+
+def RSS(x,TOL):
+    
+    dim=4
+    #Beam splitter sequence and arguments
+    #BeamS=np.array(args[1:-1])
+    BeamS=np.array([1,3,2,1,3,2,1,3])
+    BeamS=BeamS-1
+    
+    BSargs=TOL[4]
+    INDEX=TOL[5]
+    
+    count=0
+    for i in range(len(BSargs)):
+        if INDEX[i]==False:
+            BSargs[i]=(x[count],0)
+            count+=1
+    
+     #Phase shifters' arguments
+    PHargs=[Pi/4,0,Pi/4,0]
+
+    #Squeezing arguments
+    SQargs=[0.4,0,0,0.4]
+    PHargs=np.array(PHargs)
+    BSargs=np.array(BSargs)
+    
+    #states=args[-1]
+    #Theoretical covariance matrix
+    Vfinal=Vfinal_symplectic(dim,SQargs,PHargs,BSargs,BeamS)
+    
+    Vexp, actual, diag=get_sampled_moments1(TOL[0], TOL[1], TOL[2], TOL[3], Vfinal)
+    
+    comp=np.abs(Vexp-actual)
+    RSSv=np.sum(comp)
+    
+    return RSSv
