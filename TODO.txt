@@ -1,0 +1,7 @@
+Breaks at 6-7. Weird decrease in accuracy depending on the choice of pairs. Does this imply stronger correlations ?
+
+LAST: A function to test valuews for SOME BS, on demand. 
+
+TODO: Try to get averages. Whats the accuracy? 
+
+Example run on README
