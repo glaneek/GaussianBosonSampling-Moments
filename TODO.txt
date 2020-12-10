@@ -9,3 +9,5 @@ TODO: Try to get averages. Whats the accuracy?
 -Sampling methods
 
 -Minimisation scipy function
+
+-Add liscence
